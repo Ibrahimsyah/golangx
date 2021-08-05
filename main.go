@@ -4,6 +4,7 @@ import (
 	"aic-be-playground/core/api"
 	"aic-be-playground/core/domain"
 	"aic-be-playground/core/repository"
+	"aic-be-playground/core/service"
 	"aic-be-playground/core/usecase"
 
 	"github.com/labstack/echo/v4"
@@ -24,10 +25,18 @@ func main() {
 	}
 	db.AutoMigrate(&domain.User{})
 
-	//Users API
+	//Global services initialization
+	bcryptHasher := service.NewBcryptHasher(12)
+
+	//User Service
 	userRepository := repository.NewUserRepository(db)
-	userUsecase := usecase.UserInteractor{Repository: &userRepository}
-	api.NewUserHandler(e.Group("/users"), userUsecase)
+	userUsecase := usecase.UserInteractor{
+		Repository: userRepository,
+		Hasher:     bcryptHasher,
+	}
+
+	//APIs Declaration
+	api.NewUserApi(e.Group("/users"), userUsecase)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

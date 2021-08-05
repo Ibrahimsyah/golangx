@@ -7,17 +7,12 @@ import (
 )
 
 type UserInteractor struct {
-	Repository *domain.IUserRepository
+	Repository domain.IUserRepository
+	Hasher     domain.Hasher
 }
 
 func (u UserInteractor) GetAllUser(e echo.Context) (*[]domain.User, error) {
-	return &[]domain.User{
-		{
-			ID:       1,
-			Username: "hehe",
-			Password: "haha",
-		},
-	}, nil
+	return u.Repository.Get()
 }
 
 func (u UserInteractor) GetUserById(e echo.Context) (*domain.User, error) {

@@ -10,7 +10,7 @@ type bcryptHasher struct {
 	salt int
 }
 
-func NewbcryptHasherHasher(salt int) domain.Hasher {
+func NewBcryptHasher(salt int) domain.Hasher {
 	return &bcryptHasher{salt: salt}
 }
 
