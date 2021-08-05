@@ -2,19 +2,20 @@ package repository
 
 import (
 	"aic-be-playground/core/domain"
-	"aic-be-playground/core/service"
+
+	"gorm.io/gorm"
 )
 
 type UserRepository struct {
-	Store *service.InMemoryStorage
+	Db *gorm.DB
 }
 
-func NewUserRepository(store *service.InMemoryStorage) domain.IUserRepository {
-	return UserRepository{Store: store}
+func NewUserRepository(db *gorm.DB) domain.IUserRepository {
+	return UserRepository{Db: db}
 }
 
 func (u UserRepository) Get() (*[]domain.User, error) {
-	users := u.Store.GetUser()
+	users := []domain.User{}
 	return &users, nil
 }
 

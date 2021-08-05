@@ -3,7 +3,7 @@ package domain
 import "github.com/labstack/echo/v4"
 
 type User struct {
-	ID       int64  `json: "id"`
+	ID       int64  `gorm:"primaryKey" json: "id"`
 	Username string `json: "username"`
 	Password string `json: "password"`
 }
