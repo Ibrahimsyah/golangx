@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"aic-be-playground/core/domain"
+	"golangx/core/domain"
 
 	"github.com/google/uuid"
 )

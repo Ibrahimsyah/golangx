@@ -1,4 +1,4 @@
-module aic-be-playground
+module golangx
 
 go 1.16
 

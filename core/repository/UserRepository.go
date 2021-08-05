@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"aic-be-playground/core/domain"
+	"golangx/core/domain"
 
 	"gorm.io/gorm"
 )
