@@ -19,9 +19,9 @@ func NewUserApi(router *echo.Group, usecase domain.IUserUseCase) {
 }
 
 func (u *UserApi) GetAllUser(c echo.Context) error {
-	users, error := u.UserUseCase.GetAllUser()
-	if error != nil {
-		return c.String(http.StatusInternalServerError, "ERRORRR")
+	users, err := u.UserUseCase.GetAllUser()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, util.ResponseError{Message: err.Error()})
 	} else {
 		return c.JSON(http.StatusOK, users)
 	}
