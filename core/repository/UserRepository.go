@@ -2,30 +2,36 @@ package repository
 
 import (
 	"aic-be-playground/core/domain"
-	"aic-be-playground/core/service"
+
+	"gorm.io/gorm"
 )
 
 type UserRepository struct {
-	Store *service.InMemoryStorage
+	Db *gorm.DB
 }
 
-func NewUserRepository(store *service.InMemoryStorage) domain.IUserRepository {
-	return UserRepository{Store: store}
+func NewUserRepository(db *gorm.DB) domain.IUserRepository {
+	return UserRepository{Db: db}
 }
 
 func (u UserRepository) Get() (*[]domain.User, error) {
-	users := u.Store.GetUser()
-	return &users, nil
+	var users []domain.User
+	result := u.Db.Find(&users)
+	return &users, result.Error
 }
 
-func (u UserRepository) GetById(id int64) *domain.User {
-	return &domain.User{}
+func (u UserRepository) GetById(id string) *domain.User {
+	var user domain.User
+	u.Db.First(&user, "id = ?", id)
+	return &user
 }
 
 func (u UserRepository) Insert(user *domain.User) (string, error) {
-	return "", nil
+	result := u.Db.Create(&user)
+	return user.ID, result.Error
 }
 
-func (u UserRepository) Delete(id int64) error {
-	return nil
+func (u UserRepository) Delete(id string) error {
+	result := u.Db.Delete(&domain.User{}, id)
+	return result.Error
 }
