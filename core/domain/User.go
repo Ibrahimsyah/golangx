@@ -1,23 +1,26 @@
 package domain
 
-import "github.com/labstack/echo/v4"
-
 type User struct {
-	ID       int64  `gorm:"primaryKey" json:"id"`
+	ID       string `gorm:"primaryKey" json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
+type UserResponse struct {
+	ID       string `json:"id"`
+	Username string `json:"username"`
+}
+
 type IUserRepository interface {
 	Get() (*[]User, error)
-	GetById(id int64) *User
+	GetById(id string) *User
 	Insert(user *User) (string, error)
-	Delete(id int64) error
+	Delete(id string) error
 }
 
 type IUserUseCase interface {
-	GetAllUser(e echo.Context) (*[]User, error)
-	GetUserById(e echo.Context) (*User, error)
-	InsertUser(e echo.Context) error
-	DeleteUserById(id int64) error
+	GetAllUser() (*[]User, error)
+	GetUserById(id string) *User
+	InsertUser(user *User) (string, error)
+	DeleteUserById(id string) error
 }

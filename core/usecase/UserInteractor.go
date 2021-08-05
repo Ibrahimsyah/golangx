@@ -3,7 +3,7 @@ package usecase
 import (
 	"aic-be-playground/core/domain"
 
-	"github.com/labstack/echo/v4"
+	"github.com/google/uuid"
 )
 
 type UserInteractor struct {
@@ -11,18 +11,26 @@ type UserInteractor struct {
 	Hasher     domain.Hasher
 }
 
-func (u UserInteractor) GetAllUser(e echo.Context) (*[]domain.User, error) {
+func (u UserInteractor) GetAllUser() (*[]domain.User, error) {
 	return u.Repository.Get()
 }
 
-func (u UserInteractor) GetUserById(e echo.Context) (*domain.User, error) {
-	return &domain.User{}, nil
+func (u UserInteractor) GetUserById(id string) *domain.User {
+	user := u.Repository.GetById(id)
+	return user
 }
 
-func (u UserInteractor) InsertUser(e echo.Context) error {
-	return nil
+func (u UserInteractor) InsertUser(user *domain.User) (string, error) {
+	id := uuid.NewString()
+	hashedPassword, err := u.Hasher.Hash(user.Password)
+	if err != nil {
+		return "", err
+	}
+	user.ID = id
+	user.Password = hashedPassword
+	return u.Repository.Insert(user)
 }
 
-func (u UserInteractor) DeleteUserById(id int64) error {
-	return nil
+func (u UserInteractor) DeleteUserById(id string) error {
+	return u.Repository.Delete(id)
 }

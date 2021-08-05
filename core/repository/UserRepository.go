@@ -20,14 +20,18 @@ func (u UserRepository) Get() (*[]domain.User, error) {
 	return &users, result.Error
 }
 
-func (u UserRepository) GetById(id int64) *domain.User {
-	return &domain.User{}
+func (u UserRepository) GetById(id string) *domain.User {
+	var user domain.User
+	u.Db.First(&user, "id = ?", id)
+	return &user
 }
 
 func (u UserRepository) Insert(user *domain.User) (string, error) {
-	return "", nil
+	result := u.Db.Create(&user)
+	return user.ID, result.Error
 }
 
-func (u UserRepository) Delete(id int64) error {
-	return nil
+func (u UserRepository) Delete(id string) error {
+	result := u.Db.Delete(&domain.User{}, id)
+	return result.Error
 }
