@@ -1,7 +1,7 @@
 package service
 
 import (
-	"aic-be-playground/core/domain"
+	"golangx/core/domain"
 
 	"golang.org/x/crypto/bcrypt"
 )

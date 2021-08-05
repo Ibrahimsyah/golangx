@@ -1,8 +1,8 @@
 package api
 
 import (
-	"aic-be-playground/core/domain"
-	"aic-be-playground/core/util"
+	"golangx/core/domain"
+	"golangx/core/util"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

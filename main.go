@@ -1,11 +1,11 @@
 package main
 
 import (
-	"aic-be-playground/core/api"
-	"aic-be-playground/core/domain"
-	"aic-be-playground/core/repository"
-	"aic-be-playground/core/service"
-	"aic-be-playground/core/usecase"
+	"golangx/core/api"
+	"golangx/core/domain"
+	"golangx/core/repository"
+	"golangx/core/service"
+	"golangx/core/usecase"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
