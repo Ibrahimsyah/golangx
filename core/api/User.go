@@ -7,16 +7,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type UserHandler struct {
+type UserApi struct {
 	UserUseCase domain.IUserUseCase
 }
 
-func NewUserHandler(router *echo.Group, usecase domain.IUserUseCase) {
-	handler := &UserHandler{UserUseCase: usecase}
+func NewUserApi(router *echo.Group, usecase domain.IUserUseCase) {
+	handler := &UserApi{UserUseCase: usecase}
 	router.GET("/", handler.GetAllUser)
 }
 
-func (u *UserHandler) GetAllUser(e echo.Context) error {
+func (u *UserApi) GetAllUser(e echo.Context) error {
 	users, error := u.UserUseCase.GetAllUser(e)
 	if error != nil {
 		return e.String(http.StatusInternalServerError, "ERRORRR")
