@@ -1,0 +1,5 @@
+debug: true
+server:
+  address: ":9900"
+database:
+  dsn: "yourdsn"

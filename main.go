@@ -9,16 +9,20 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 func main() {
-	e := echo.New()
-	e.Use(middleware.CORS())
+	//Config Initialization
+	viper.SetConfigFile("config.yaml")
+	if err := viper.ReadInConfig(); err != nil {
+		panic(err)
+	}
 
 	//DB initialization
-	dsn := "host=localhost port=5432 user=postgres password=aicpgdb dbname=aic-db sslmode=disable TimeZone=Asia/Jakarta"
+	dsn := viper.GetString("database.dsn")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("DB Initialization Failed")
@@ -35,8 +39,14 @@ func main() {
 		Hasher:     bcryptHasher,
 	}
 
+	//Server initialization
+	e := echo.New()
+	e.Use(middleware.CORS())
+
 	//APIs Declaration
 	api.NewUserApi(e.Group("/users"), userUsecase)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	//Server starter
+	serverAddress := viper.GetString("server.address")
+	e.Logger.Fatal(e.Start(serverAddress))
 }
