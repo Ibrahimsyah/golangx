@@ -25,7 +25,7 @@ func (u *UserApi) InsertNewUser(c echo.Context) error {
 
 	id, err := u.UserUseCase.InsertUser(&user)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, util.ResponseError{Message: err.Error()})
+		return c.JSON(util.GenerateResponseCode(err), util.ResponseError{Message: err.Error()})
 	}
 
 	userResponse := domain.UserResponse{ID: id, Username: user.Username}

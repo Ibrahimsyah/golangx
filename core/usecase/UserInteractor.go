@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"errors"
 	"golangx/core/domain"
+	"golangx/core/util"
 
 	"github.com/google/uuid"
 )
@@ -26,7 +26,7 @@ func (u *UserInteractor) GetUserById(id string) *domain.User {
 
 func (u *UserInteractor) InsertUser(user *domain.User) (string, error) {
 	if usernameExists := u.Repository.CheckUsernameExists(user.Username); usernameExists {
-		return "", errors.New("User Already Exists")
+		return "", util.ConflictError
 	}
 	id := uuid.NewString()
 	hashedPassword, err := u.Hasher.Hash(user.Password)
