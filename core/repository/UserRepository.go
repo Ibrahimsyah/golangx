@@ -14,10 +14,9 @@ func NewUserRepository(db *gorm.DB) domain.IUserRepository {
 	return UserRepository{Db: db}
 }
 
-func (u UserRepository) Get() (*[]domain.User, error) {
-	var users []domain.User
-	result := u.Db.Find(&users)
-	return &users, result.Error
+func (u UserRepository) CheckUsernameExists(username string) bool {
+	result := u.Db.First(&domain.User{}, "username = ?", username)
+	return result.RowsAffected == 1
 }
 
 func (u UserRepository) GetById(id string) *domain.User {

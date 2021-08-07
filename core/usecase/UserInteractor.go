@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"golangx/core/domain"
 
 	"github.com/google/uuid"
@@ -11,16 +12,22 @@ type UserInteractor struct {
 	Hasher     domain.Hasher
 }
 
-func (u UserInteractor) GetAllUser() (*[]domain.User, error) {
-	return u.Repository.Get()
+func NewUserInteractor(repository *domain.IUserRepository, hasher *domain.Hasher) domain.IUserUseCase {
+	return &UserInteractor{
+		Repository: *repository,
+		Hasher:     *hasher,
+	}
 }
 
-func (u UserInteractor) GetUserById(id string) *domain.User {
+func (u *UserInteractor) GetUserById(id string) *domain.User {
 	user := u.Repository.GetById(id)
 	return user
 }
 
-func (u UserInteractor) InsertUser(user *domain.User) (string, error) {
+func (u *UserInteractor) InsertUser(user *domain.User) (string, error) {
+	if usernameExists := u.Repository.CheckUsernameExists(user.Username); usernameExists {
+		return "", errors.New("User Already Exists")
+	}
 	id := uuid.NewString()
 	hashedPassword, err := u.Hasher.Hash(user.Password)
 	if err != nil {
@@ -31,6 +38,6 @@ func (u UserInteractor) InsertUser(user *domain.User) (string, error) {
 	return u.Repository.Insert(user)
 }
 
-func (u UserInteractor) DeleteUserById(id string) error {
+func (u *UserInteractor) DeleteUserById(id string) error {
 	return u.Repository.Delete(id)
 }
