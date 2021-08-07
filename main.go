@@ -34,10 +34,7 @@ func main() {
 
 	//User Service
 	userRepository := repository.NewUserRepository(db)
-	userUsecase := usecase.UserInteractor{
-		Repository: userRepository,
-		Hasher:     bcryptHasher,
-	}
+	userUsecase := usecase.NewUserInteractor(&userRepository, &bcryptHasher)
 
 	//Server initialization
 	e := echo.New()
