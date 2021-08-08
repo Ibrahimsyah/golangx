@@ -12,8 +12,8 @@ type UserApi struct {
 	UserUseCase domain.IUserUseCase
 }
 
-func NewUserApi(router *echo.Group, usecase domain.IUserUseCase) {
-	handler := &UserApi{UserUseCase: usecase}
+func NewUserApi(router *echo.Group, usecase *domain.IUserUseCase) {
+	handler := &UserApi{UserUseCase: *usecase}
 	router.POST("/", handler.InsertNewUser)
 }
 

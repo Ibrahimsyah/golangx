@@ -41,7 +41,7 @@ func main() {
 	e.Use(middleware.CORS())
 
 	//APIs Declaration
-	api.NewUserApi(e.Group("/users"), userUsecase)
+	api.NewUserApi(e.Group("/users"), &userUsecase)
 
 	//Server starter
 	serverAddress := viper.GetString("server.address")
