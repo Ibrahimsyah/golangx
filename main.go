@@ -32,9 +32,12 @@ func main() {
 	//Global services initialization
 	bcryptHasher := service.NewBcryptHasher(12)
 
-	//User Service
+	//User service
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserInteractor(&userRepository, &bcryptHasher)
+
+	//Auth service
+	authUsecase := usecase.NewAuthInteractor(&userRepository)
 
 	//Server initialization
 	e := echo.New()
@@ -42,6 +45,7 @@ func main() {
 
 	//APIs Declaration
 	api.NewUserApi(e.Group("/users"), &userUsecase)
+	api.NewAuthApi(e.Group("/auth"), &authUsecase)
 
 	//Server starter
 	serverAddress := viper.GetString("server.address")
