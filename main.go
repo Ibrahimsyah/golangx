@@ -41,7 +41,7 @@ func main() {
 	userUsecase := usecase.NewUserInteractor(&userRepository, &bcryptHasher)
 
 	//Auth service
-	authUsecase := usecase.NewAuthInteractor(&userRepository)
+	authUsecase := usecase.NewAuthInteractor(&userRepository, &bcryptHasher)
 
 	//APIs Declaration
 	api.NewUserApi(e.Group("/users"), &userUsecase)

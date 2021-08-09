@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// 409 Error
 type ConflictError struct {
 	message string
 }
@@ -17,6 +18,7 @@ func NewConflictError(message string) ConflictError {
 	return ConflictError{message: message}
 }
 
+// 404 Error
 type NotFoundError struct {
 	message string
 }
@@ -26,6 +28,19 @@ func NewNotFoundError(message string) NotFoundError {
 }
 
 func (e NotFoundError) Error() string {
+	return e.message
+}
+
+//403 Error
+type ForbiddenError struct {
+	message string
+}
+
+func NewForbiddenError(message string) ForbiddenError {
+	return ForbiddenError{message: message}
+}
+
+func (e ForbiddenError) Error() string {
 	return e.message
 }
 
@@ -39,6 +54,8 @@ func GenerateResponseCode(err error) int {
 		return http.StatusConflict
 	case NotFoundError:
 		return http.StatusNotFound
+	case ForbiddenError:
+		return http.StatusForbidden
 	default:
 		return http.StatusInternalServerError
 	}

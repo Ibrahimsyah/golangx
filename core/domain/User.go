@@ -13,13 +13,13 @@ type UserResponse struct {
 
 type IUserRepository interface {
 	CheckUsernameExists(username string) bool
-	GetById(id string) *User
+	GetByUsername(username string) *User
 	Insert(user *User) (string, error)
 	Delete(id string) error
 }
 
 type IUserUseCase interface {
-	GetUserById(id string) *User
+	GetUserByUsername(username string) *User
 	InsertUser(user *User) (string, error)
 	DeleteUserById(id string) error
 }

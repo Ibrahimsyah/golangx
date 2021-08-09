@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"golangx/core/domain"
 	"golangx/core/util"
 	"net/http"
@@ -25,6 +24,8 @@ func (a *AuthApi) LoginUser(c echo.Context) error {
 	}
 
 	data, err := a.AuthUseCase.LoginUser(user)
-	fmt.Println(err)
+	if err != nil {
+		return c.JSON(util.GenerateResponseCode(err), util.ResponseError{Message: err.Error()})
+	}
 	return c.JSON(http.StatusOK, data)
 }

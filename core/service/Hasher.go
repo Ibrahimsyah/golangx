@@ -19,6 +19,7 @@ func (b *bcryptHasher) Hash(s string) (string, error) {
 	return string(res), err
 }
 
-func (b *bcryptHasher) Verify(hashed, original string) error {
-	return bcrypt.CompareHashAndPassword([]byte(hashed), []byte(original))
+func (b *bcryptHasher) Verify(hashed, original string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(original))
+	return err == nil
 }
