@@ -3,6 +3,7 @@ module golangx
 go 1.16
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/labstack/echo/v4 v4.5.0
 	github.com/lib/pq v1.6.0 // indirect

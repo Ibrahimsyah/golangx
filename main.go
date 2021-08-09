@@ -7,6 +7,7 @@ import (
 	"golangx/core/service"
 	"golangx/core/usecase"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/viper"
@@ -35,13 +36,18 @@ func main() {
 
 	//Global services initialization
 	bcryptHasher := service.NewBcryptHasher(12)
+	jwtAuth := service.NewJwtAuth(
+		viper.GetString("auth/jwt_secret"),
+		jwt.SigningMethodHS256,
+		viper.GetInt("auth/jwt_expiration_minutes"),
+	)
 
 	//User service
 	userRepository := repository.NewUserRepository(db)
 	userUsecase := usecase.NewUserInteractor(&userRepository, &bcryptHasher)
 
 	//Auth service
-	authUsecase := usecase.NewAuthInteractor(&userRepository, &bcryptHasher)
+	authUsecase := usecase.NewAuthInteractor(&userRepository, &bcryptHasher, &jwtAuth)
 
 	//APIs Declaration
 	api.NewUserApi(e.Group("/users"), &userUsecase)

@@ -2,6 +2,7 @@ package domain
 
 type AuthResponse struct {
 	AccessToken string `json:"access_token"`
+	ExpiredAt   int64  `json:"expired_at"`
 }
 
 type AuthRequest struct {
