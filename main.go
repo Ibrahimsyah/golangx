@@ -29,19 +29,23 @@ func main() {
 	}
 	db.AutoMigrate(&domain.User{})
 
-	//Global services initialization
-	bcryptHasher := service.NewBcryptHasher(12)
-
-	//User Service
-	userRepository := repository.NewUserRepository(db)
-	userUsecase := usecase.NewUserInteractor(&userRepository, &bcryptHasher)
-
 	//Server initialization
 	e := echo.New()
 	e.Use(middleware.CORS())
 
+	//Global services initialization
+	bcryptHasher := service.NewBcryptHasher(12)
+
+	//User service
+	userRepository := repository.NewUserRepository(db)
+	userUsecase := usecase.NewUserInteractor(&userRepository, &bcryptHasher)
+
+	//Auth service
+	authUsecase := usecase.NewAuthInteractor(&userRepository)
+
 	//APIs Declaration
 	api.NewUserApi(e.Group("/users"), &userUsecase)
+	api.NewAuthApi(e.Group("/auth"), &authUsecase)
 
 	//Server starter
 	serverAddress := viper.GetString("server.address")

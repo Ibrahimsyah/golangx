@@ -26,7 +26,7 @@ func (u *UserInteractor) GetUserById(id string) *domain.User {
 
 func (u *UserInteractor) InsertUser(user *domain.User) (string, error) {
 	if usernameExists := u.Repository.CheckUsernameExists(user.Username); usernameExists {
-		return "", util.ConflictError
+		return "", util.NewConflictError("Username already exists")
 	}
 	id := uuid.NewString()
 	hashedPassword, err := u.Hasher.Hash(user.Password)
