@@ -29,6 +29,10 @@ func main() {
 	}
 	db.AutoMigrate(&domain.User{})
 
+	//Server initialization
+	e := echo.New()
+	e.Use(middleware.CORS())
+
 	//Global services initialization
 	bcryptHasher := service.NewBcryptHasher(12)
 
@@ -38,10 +42,6 @@ func main() {
 
 	//Auth service
 	authUsecase := usecase.NewAuthInteractor(&userRepository)
-
-	//Server initialization
-	e := echo.New()
-	e.Use(middleware.CORS())
 
 	//APIs Declaration
 	api.NewUserApi(e.Group("/users"), &userUsecase)
