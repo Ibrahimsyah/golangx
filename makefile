@@ -3,3 +3,4 @@ run:
 
 clean:
 	rm main
+  
