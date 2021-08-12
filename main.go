@@ -3,9 +3,11 @@ package main
 import (
 	"golangx/core/api"
 	"golangx/core/domain"
+	m "golangx/core/middleware"
 	"golangx/core/repository"
 	"golangx/core/service"
 	"golangx/core/usecase"
+	"net/http"
 
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
@@ -53,7 +55,17 @@ func main() {
 	api.NewUserApi(e.Group("/users"), &userUsecase)
 	api.NewAuthApi(e.Group("/auth"), &authUsecase)
 
+	secret := e.Group("/secret")
+	secret.Use(m.JwtMiddleware)
+
+	secret.GET("", func(c echo.Context) error {
+		user := c.Get("user").(*jwt.Token)
+		claims := user.Claims.(*domain.JwtClaims)
+		return c.JSON(http.StatusOK, claims)
+	})
+
 	//Server starter
 	serverAddress := viper.GetString("server.address")
 	e.Logger.Fatal(e.Start(serverAddress))
+
 }

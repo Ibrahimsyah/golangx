@@ -21,10 +21,12 @@ func NewJwtAuth(secretKey string, algorithm jwt.SigningMethod, expirationMinutes
 }
 
 func (j *JwtAuth) CreateToken(userId string) (result domain.JwtResponse, err error) {
-	jwtToken := jwt.NewWithClaims(j.Algorithm, jwt.MapClaims{
-		"userId":    userId,
-		"expiredAt": j.Expiration,
-	})
+	claims := domain.JwtClaims{
+		UserId:    userId,
+		ExpiredAt: j.Expiration,
+	}
+
+	jwtToken := jwt.NewWithClaims(j.Algorithm, claims)
 	token, error := jwtToken.SignedString(j.SecretKey)
 	result.Token = token
 	result.Expiration = j.Expiration
