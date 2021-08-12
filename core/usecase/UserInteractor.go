@@ -19,8 +19,8 @@ func NewUserInteractor(repository *domain.IUserRepository, hasher *domain.Hasher
 	}
 }
 
-func (u *UserInteractor) GetUserById(id string) *domain.User {
-	user := u.Repository.GetById(id)
+func (u *UserInteractor) GetUserByUsername(username string) *domain.User {
+	user := u.Repository.GetByUsername(username)
 	return user
 }
 

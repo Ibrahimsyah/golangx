@@ -19,9 +19,9 @@ func (u *UserRepository) CheckUsernameExists(username string) bool {
 	return result.RowsAffected == 1
 }
 
-func (u *UserRepository) GetById(id string) *domain.User {
+func (u *UserRepository) GetByUsername(username string) *domain.User {
 	var user domain.User
-	u.Db.First(&user, "id = ?", id)
+	u.Db.First(&user, "username = ?", username)
 	return &user
 }
 
