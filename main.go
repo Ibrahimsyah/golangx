@@ -35,6 +35,7 @@ func main() {
 	//Server initialization
 	e := echo.New()
 	e.Use(middleware.CORS())
+	e.Use(middleware.Logger())
 
 	//Global services initialization
 	bcryptHasher := service.NewBcryptHasher(12)
