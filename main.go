@@ -18,7 +18,7 @@ import (
 )
 
 func main() {
-	//Config Initialization
+	//Config initialization
 	viper.SetConfigFile("config.yaml")
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
@@ -52,7 +52,7 @@ func main() {
 	//Auth service
 	authUsecase := usecase.NewAuthInteractor(&userRepository, &bcryptHasher, &jwtAuth)
 
-	//APIs Declaration
+	//APIs declaration
 	api.NewUserApi(e.Group("/users"), &userUsecase)
 	api.NewAuthApi(e.Group("/auth"), &authUsecase)
 
